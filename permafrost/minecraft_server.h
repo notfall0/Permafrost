@@ -3,6 +3,8 @@
 
 #include <asio.hpp>
 
+#include "net/network_server.h"
+
 namespace permafrost {
 
 class MinecraftServer {
@@ -11,6 +13,7 @@ class MinecraftServer {
 
  private:
   asio::io_context io_context_;
+  NetworkServer net_server_{ io_context_ };
 };
 
 }  // namespace permafrost
