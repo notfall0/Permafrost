@@ -29,4 +29,15 @@ IoResult<std::int16_t> MinecraftReader::ReadShort() {
   return static_cast<std::int16_t>(out);
 }
 
+IoResult<MinecraftString> MinecraftReader::ReadString() {
+  std::array<char, MinecraftString::kSize> data{};
+
+  auto result = reader_.ReadExact(data.data(), data.size());
+  if (!result) {
+    return MakeError(result.error());
+  }
+
+  return IoResult<MinecraftString>{ MinecraftString{ std::move(data) } };
+}
+
 }  // namespace permafrost

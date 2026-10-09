@@ -23,17 +23,26 @@ asio::awaitable<void> ClientSession::Run() {
       }
 
       if (*packet_id == 0x00) {
-        std::cout << "Player Identification packet arrived!\n";
         auto protocol_version = minecraft_reader.ReadUByte();
         if (!protocol_version) {
           continue;
         }
 
-        if (*protocol_version != 0x07) {
-          std::cout << "Protocol version mismatch!\n";
-        } else {
-          std::cout << "Correct!\n";
+        auto username = minecraft_reader.ReadString();
+        if (!username) {
+          continue;
         }
+
+        auto verification_key = minecraft_reader.ReadString();
+        if (!verification_key) {
+          continue;
+        }
+
+        (void)minecraft_reader.ReadUByte();
+
+        std::cout << static_cast<int>(*protocol_version) << ' '
+            << username->ToTrimmedString() << ' '
+            << verification_key->ToTrimmedString() << '\n';
       }
     }
   } catch (const std::system_error&) {

@@ -3,6 +3,8 @@
 
 #include "permafrost/io/memory_reader.h"
 
+#include "minecraft_string.h"
+
 namespace permafrost {
 
 class MinecraftReader {
@@ -13,6 +15,7 @@ class MinecraftReader {
   IoResult<std::uint8_t> ReadUByte();
   IoResult<std::int8_t> ReadSByte();
   IoResult<std::int16_t> ReadShort();
+  IoResult<MinecraftString> ReadString();
 
  private:
   MemoryReader&  reader_;
